@@ -7,6 +7,7 @@ export const metadata = {
     "Generative UI · Global Agents · Agentic Interfaces — pick a surface to explore.",
 };
 
+const tiles = [
   {
     href: "/travel",
     eyebrow: "App",

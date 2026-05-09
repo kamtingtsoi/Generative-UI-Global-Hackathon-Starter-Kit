@@ -8,26 +8,17 @@ import type { NextConfig } from "next";
 // `ln -sf ../../.env apps/frontend/.env` postinstall, which was non-portable.
 loadEnvConfig(path.resolve(__dirname, "../.."));
 
-const BFF_URL = process.env.BFF_URL ?? "http://localhost:4000";
-
 const nextConfig: NextConfig = {
-  // Proxy CopilotKit runtime requests to the Hono BFF (apps/bff). We can't run
-  // the runtime in a Next.js API route directly because the runtime's v2 entry
-  // pulls in express, which Next can't bundle (dynamic require in view.js).
-  // Same-origin proxy keeps the drawer's relative fetches (e.g.
-  // PATCH /api/copilotkit/threads/{id}) working without CORS.
-  async rewrites() {
-    return [
-      {
-        source: "/api/copilotkit/:path*",
-        destination: `${BFF_URL}/api/copilotkit/:path*`,
-      },
-      {
-        source: "/api/copilotkit",
-        destination: `${BFF_URL}/api/copilotkit`,
-      },
-    ];
-  },
+  // The /travel flow serves CopilotKit directly from Next at
+  // src/app/api/copilotkit/route.ts (BuiltInAgent + AWS Bedrock), so no BFF
+  // rewrite is needed. The leads demo is not wired up for this branch.
+
+  // @copilotkit/runtime ships an express-backed endpoint in its v2 barrel that
+  // Turbopack chokes on (dynamic require in express/lib/view.js). Marking it
+  // as external tells Next to `require()` the package at runtime instead of
+  // bundling it — our route only uses the fetch-style `createCopilotRuntimeHandler`,
+  // so express is never actually invoked.
+  serverExternalPackages: ["@copilotkit/runtime"],
 };
 
 export default nextConfig;
