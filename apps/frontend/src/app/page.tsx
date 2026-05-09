@@ -7,7 +7,14 @@ export const metadata = {
     "Generative UI · Global Agents · Agentic Interfaces — pick a surface to explore.",
 };
 
-const tiles = [
+  {
+    href: "/travel",
+    eyebrow: "App",
+    title: "Travel planner",
+    blurb:
+      "A generative travel planning experience: interactive itineraries, 'kick out' feedback, and persistent trip drafting.",
+    icon: Sparkles,
+  },
   {
     href: "/leads",
     eyebrow: "Demo",
@@ -16,6 +23,7 @@ const tiles = [
       "The full working app: pipeline, demand, list views, HITL flows, optimistic Notion writes through the agent.",
     icon: LayoutGrid,
   },
+
   {
     href: "/showcase",
     eyebrow: "Reference",
